@@ -18,6 +18,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-Header = connect(undefined, mapDispatchToProps)(Header);
+Header = connect(null, mapDispatchToProps)(Header);
 
 export default Header;

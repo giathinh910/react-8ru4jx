@@ -6,13 +6,13 @@ export default function requireAuth(ToBeValidatedComponent) {
     class Authentication extends React.Component {
         componentWillMount() {
             if (!this.props.auth) {
-                this.props.history.push('/signin');
+                this.props.history.push('/authenticate');
             }
         }
 
         componentWillUpdate(nextProps) {
             if (!nextProps.auth) {
-                this.props.history.push('/signin');
+                this.props.history.push('/authenticate');
             }
         }
 

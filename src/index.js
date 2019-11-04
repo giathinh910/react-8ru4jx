@@ -11,7 +11,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import SignIn from './SignIn';
+import Authenticate from './Authenticate';
 
 const store = createStore(reducers);
 
@@ -22,8 +22,8 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <Route path="/signin">
-                    <SignIn />
+                <Route path="/authenticate">
+                    <Authenticate />
                 </Route>
                 <Route path="/">
                     <App />
