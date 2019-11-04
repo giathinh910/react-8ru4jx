@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import { Provider } from 'react-redux';
 import {
@@ -12,8 +12,15 @@ import {
     Route
 } from "react-router-dom";
 import Authenticate from './Authenticate';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
 
-const store = createStore(reducers);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+    reducers,
+    applyMiddleware(sagaMiddleware)
+);
+sagaMiddleware.run(rootSaga);
 
 console.log(store.getState())
 store.subscribe(() => console.log(store.getState()))

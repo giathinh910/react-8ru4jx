@@ -4,5 +4,5 @@ import token from './token';
 
 export default combineReducers({
     auth,
-    token
+    token,
 });

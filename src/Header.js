@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { setAuth } from './actions';
+import { setAuth } from './actions/auth';
 import { connect } from 'react-redux';
 
 let Header = ({ onLogoutClick }) => {
