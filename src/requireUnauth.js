@@ -4,13 +4,14 @@ import { withRouter } from 'react-router-dom';
 
 export default function requireUnauth(ToBeValidatedComponent) {
     class Authentication extends React.Component {
-        componentWillMount() {
+        constructor(props) {
+            super(props);
             if (this.props.auth) {
                 this.props.history.push('/');
             }
         }
 
-        componentWillUpdate(nextProps) {
+        shouldComponentUpdate(nextProps) {
             if (nextProps.auth) {
                 this.props.history.push('/');
             }
