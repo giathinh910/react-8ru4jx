@@ -1,56 +1,61 @@
 import React, { Fragment } from 'react';
-import { setAuth, getToken } from './actions/auth';
+import { getToken } from './actions/auth.action';
 import { connect } from 'react-redux';
 import requireUnauth from './requireUnauth';
 import queryString from 'query-string';
 
-let Authenticate = ({ exchangeToken, location, requesting, token }) => {
-    const clientId = process.env.REACT_APP_CLIENT_ID;
-    const oauthUrl = clientId ? `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo` : '';
-    const { code } = queryString.parse(location.search);
+class Authenticate extends React.Component {
+    authenticating = false;
+    code = null;
 
-    if (!token && code) {
-        exchangeToken(code);
-        return (
-            <Fragment>Authenticating ...</Fragment>
-        );
-
-        // return (
-        //     <Fragment>Authenticated</Fragment>
-        // );
+    constructor(props) {
+        super(props);
+        this.getToken();
     }
 
-    if (oauthUrl) {
-        return (
-            <Fragment>
-                <a href={oauthUrl}>Authenticate</a>
-            </Fragment>
-        )
-    } else {
-        return (
-            <Fragment>No ClientID</Fragment>
-        )
+    getToken() {
+        const { code } = queryString.parse(this.props.location.search);
+        const { token } = this.props;
+        if (!token && code) {
+            this.code = code;
+            this.props.exchangeToken(code);
+        }
+    }
+
+    render() {
+        const clientId = process.env.REACT_APP_CLIENT_ID;
+        const oauthUrl = clientId ? `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo` : '';
+        const { token } = this.props;
+
+        if (!token && this.code) {
+            return (
+                <Fragment>Authenticating ...</Fragment>
+            );
+        }
+
+        if (oauthUrl) {
+            return (
+                <Fragment>
+                    <a href={oauthUrl}>Authenticate</a>
+                </Fragment>
+            )
+        } else {
+            return (
+                <Fragment>No ClientID</Fragment>
+            )
+        }
     }
 };
 
 const mapStateToProps = store => {
-    const {requesting, token} = store.token;
+    const { token } = store.auth;
     return {
-        requesting, token
+        token
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onLoginClick: () => {
-            dispatch(setAuth(true));
-        },
-        exchangeToken: (code) => {
-            dispatch(getToken(code))
-        }
-    }
+const mapDispatchToProps = {
+    exchangeToken: (code) => getToken(code)
 }
 
-Authenticate = requireUnauth(connect(mapStateToProps, mapDispatchToProps)(Authenticate));
-
-export default Authenticate;
+export default requireUnauth(connect(mapStateToProps, mapDispatchToProps)(Authenticate));

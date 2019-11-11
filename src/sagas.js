@@ -1,19 +1,23 @@
 import { takeEvery, all, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { setToken } from './actions/auth';
+import { setToken, setAuth, actions } from './actions/auth.action';
 
 function* exchangeCodeForToken({ code }) {
   const res = yield axios.get(`http://localhost:3000/api/auth?code=${code}`);
   const { access_token } = res.data;
   if (access_token) {
-    yield put(setToken(access_token));
+    yield all([
+      put(setToken(access_token)),
+      put(setAuth(true)),
+    ]);
   } else {
-    console.log(res)
+    // TODO: handle error response
+    console.log(res);
   }
 }
 
 function* getTokenSaga() {
-  yield takeEvery('GET_TOKEN', exchangeCodeForToken);
+  yield takeEvery(actions.GET_TOKEN, exchangeCodeForToken);
 }
 
 export default function* rootSaga() {

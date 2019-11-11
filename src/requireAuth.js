@@ -6,15 +6,17 @@ export default function requireAuth(ToBeValidatedComponent) {
     class Authentication extends React.Component {
         constructor(props) {
             super(props);
-            if (!this.props.auth) {
+            if (!this.props.loggedIn) {
                 this.props.history.push('/authenticate');
             }
         }
 
         shouldComponentUpdate(nextProps) {
-            if (!nextProps.auth) {
+            if (!nextProps.loggedIn) {
                 this.props.history.push('/authenticate');
+                return false;
             }
+            return true;
         }
 
         render() {
@@ -24,7 +26,7 @@ export default function requireAuth(ToBeValidatedComponent) {
 
     const mapStateToProps = state => {
         return {
-            auth: state.auth
+            loggedIn: state.auth.loggedIn
         }
     };
 

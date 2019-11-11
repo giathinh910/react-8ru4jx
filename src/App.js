@@ -3,11 +3,12 @@ import Header from './Header';
 import PullRequestStatistic from './PullRequestStatistic';
 import requireAuth from './requireAuth';
 
-const App = () => (
+const App = () => {
+  return (
   <Fragment>
     <Header></Header>
     <PullRequestStatistic></PullRequestStatistic>
   </Fragment>
-);
+)};
 
 export default requireAuth(App);
