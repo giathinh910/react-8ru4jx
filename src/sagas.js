@@ -3,7 +3,8 @@ import axios from 'axios';
 import { setToken, setAuth, actions } from './actions/auth.action';
 
 function* exchangeCodeForToken({ code }) {
-  const res = yield axios.get(`http://localhost:3000/api/auth?code=${code}`);
+  const apiUri = process.env.REACT_APP_API_URI;
+  const res = yield axios.get(`${apiUri}/auth?code=${code}`);
   const { access_token } = res.data;
   if (access_token) {
     yield all([
